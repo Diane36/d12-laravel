@@ -1,6 +1,12 @@
 <?php
 
+use App\Http\Controllers\ComentarioController;
+use App\Http\Controllers\SitioController;
+use App\Models\Comentario;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +21,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/info/{tipo?}', [SitioController::class, 'info']);
+
+//Route::get('/comentario/create', [ComentarioController::class, 'create']);
+
+//Route::post('/comentario-guarda', [ComentarioController::class, 'store']);
+
+Route::resource('comentario', ComentarioController::class);
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 });
